@@ -1,0 +1,19 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+solc_version = "0.8.26"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+remappings = [
+    "@uniswap/v4-core/=lib/v4-core/",
+    "@uniswap/v4-periphery/=lib/v4-periphery/",
+    "v4-hooks-public/=lib/v4-hooks-public/src/",
+    "reactive-lib/=lib/reactive-lib/src/",
+    "forge-std/=lib/forge-std/src/"
+]
+fs_permissions = [
+    { access = "read-write", path = "./deployments" },
+    { access = "read-write", path = "./frontend/public/deployments" }
+]
