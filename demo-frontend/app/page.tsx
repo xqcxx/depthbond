@@ -1,56 +1,25 @@
-"use client";
+import Link from "next/link";
 
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import type { Deployment, Roles } from "@/lib/types";
-
-const fieldNames = ["deployer", "ada", "bao", "jit", "trader"] as const;
+const mechanics = [
+  ["01", "Commit", "An LP locks a position to an epoch and posts a native-token bond."],
+  ["02", "Observe", "A Uniswap v4 hook records qualifying swaps while the position stays active."],
+  ["03", "Settle", "Reactive relays the close event through an authenticated cross-chain callback."],
+  ["04", "Reward", "The vault distributes rewards only to eligible, in-range liquidity."],
+];
 
 export default function Home() {
-  const router = useRouter();
-  const [title, setTitle] = useState("DepthBond reliability walkthrough");
-  const [deploymentJson, setDeploymentJson] = useState("");
-  const [rsc, setRsc] = useState("");
-  const [roles, setRoles] = useState<Record<(typeof fieldNames)[number], string>>({ deployer: "", ada: "", bao: "", jit: "", trader: "" });
-  const [notice, setNotice] = useState("");
-
-  async function createRun(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    try {
-      setNotice("Verifying Unichain deployment and Reactive RSC...");
-      const deployment = JSON.parse(deploymentJson) as Deployment;
-      const response = await fetch("/api/runs", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ title, deployment, rsc, roles: roles as Roles }),
-      });
-      const result = (await response.json()) as { id?: string; error?: string };
-      if (!response.ok || !result.id) throw new Error(result.error ?? "Could not create the walkthrough.");
-      router.push(`/demo/${result.id}`);
-    } catch (error) {
-      setNotice(error instanceof Error ? error.message : "Could not create the walkthrough.");
-    }
-  }
-
-  return (
-    <main className="landing">
-      <section className="landing-copy">
-        <p className="eyebrow">DepthBond / Unichain Sepolia</p>
-        <h1>Show why liquidity<br /><em>that stays</em> matters.</h1>
-        <p>Create a public, transaction-backed walkthrough from a fresh deployment. The chain is the proof; this app explains each transition.</p>
-        <div className="principles"><span>Fresh contracts per run</span><span>Real testnet transactions</span><span>Public evidence trail</span></div>
-      </section>
-      <form className="import-card" onSubmit={createRun}>
-        <div><p className="eyebrow">01 / Register deployment</p><h2>Start a new walkthrough</h2></div>
-        <label>Walkthrough title<input value={title} onChange={(event) => setTitle(event.target.value)} required /></label>
-        <label>Unichain deployment JSON<textarea value={deploymentJson} onChange={(event) => setDeploymentJson(event.target.value)} placeholder='Paste deployments/unichain-sepolia.json' required /></label>
-        <label>Reactive RSC address<input value={rsc} onChange={(event) => setRsc(event.target.value)} placeholder="0x..." required /></label>
-        <div className="role-grid">
-          {fieldNames.map((role) => <label key={role}>{role}<input value={roles[role]} onChange={(event) => setRoles({ ...roles, [role]: event.target.value })} placeholder="0x..." required /></label>)}
-        </div>
-        <button type="submit">Verify deployment and create run</button>
-        {notice && <p className="notice">{notice}</p>}
-      </form>
-    </main>
-  );
+  return <main className="site">
+    <nav className="site-nav"><Link className="site-wordmark" href="/">Depth<span>Bond</span></Link><div className="site-nav-links"><a href="#mechanism">Mechanism</a><a href="#architecture">Architecture</a><a href="#proof">Proof</a></div><Link className="site-nav-cta" href="/demo">Launch app <span>↗</span></Link></nav>
+    <section className="site-hero">
+      <div className="site-hero-copy"><p className="site-kicker">CleanFlow Bonds / Unichain + Reactive</p><h1>Make liquidity<br />earn its <i>place.</i></h1><p className="site-lede">CleanFlow Bonds reward the liquidity that remains available when trading needs it. A simple bond turns reliable depth into a measurable, on-chain commitment.</p><div className="site-actions"><Link className="site-primary" href="/demo">Launch the interactive demo <span>→</span></Link><a className="site-secondary" href="#mechanism">See how it works <span>↓</span></a></div></div>
+      <div className="site-hero-visual" aria-label="Liquidity reliability illustration"><div className="site-orbit site-orbit-one" /><div className="site-orbit site-orbit-two" /><div className="site-core"><small>RELIABLE DEPTH</small><strong>01</strong><span>epoch active</span></div><div className="site-float site-float-top"><b>+ eligibility</b><span>before snapshot</span></div><div className="site-float site-float-bottom"><b>25% bond</b><span>early exit penalty</span></div></div>
+    </section>
+    <section className="site-statement"><p>Liquidity incentives should pay for <em>presence</em>, not promises.</p><span>DepthBond is an epoch-based managed-liquidity protocol built for Uniswap v4.</span></section>
+    <section className="site-section site-problem" id="mechanism"><p className="site-kicker">The problem</p><div className="site-section-heading"><h2>Liquidity is easy to rent.<br />Reliability is harder to find.</h2><p>Traditional liquidity mining rewards capital at a point in time. It does not distinguish an LP who keeps a market usable from one who arrives for a reward and leaves before the next trade.</p></div><div className="site-problem-grid"><article><span>01</span><h3>Mercenary capital</h3><p>Yield attracts liquidity, but short-term positions can vanish precisely when markets become volatile.</p></article><article><span>02</span><h3>Unpriced commitment</h3><p>Staying active and in range is useful work for a pool, yet it is rarely made explicit in incentive design.</p></article><article><span>03</span><h3>Opaque automation</h3><p>Settlement infrastructure must be verifiable, not a trusted off-chain promise that LPs cannot inspect.</p></article></div></section>
+    <section className="site-section site-mechanism"><div className="site-mechanism-intro"><p className="site-kicker">The mechanism</p><h2>A bond makes<br />reliability legible.</h2><p>Each position is bound to a commitment. LPs that enter before an epoch opens, remain active, and supply liquidity in the active range can earn. Early exits forfeit a deterministic portion of the bond back to the reward reserve.</p><div className="site-outcomes"><div><b>Durable LP</b><span>Eligible for rewards</span></div><div><b>Inactive range</b><span>Not slashed, not paid</span></div><div><b>Early exit</b><span>25% bond to reserve</span></div></div></div><div className="site-timeline">{mechanics.map(([number, title, copy]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></section>
+    <section className="site-section site-architecture" id="architecture"><div><p className="site-kicker">Architecture</p><h2>Protocol rules on-chain.<br />Automation with receipts.</h2></div><div className="site-diagram"><div className="site-node site-node-vault"><small>01 / UNICHAIN</small><b>DepthBond Vault</b><span>Commitments, bonds, and claims</span></div><div className="site-node site-node-hook"><small>02 / UNISWAP V4</small><b>DepthBond Hook</b><span>Observed volume and managed positions</span></div><div className="site-node site-node-rsc"><small>03 / REACTIVE</small><b>DepthBond RSC</b><span>Close-event subscription and relay</span></div><div className="site-node site-node-controller"><small>04 / UNICHAIN</small><b>Epoch Controller</b><span>Authenticated settlement and epochs</span></div><div className="site-diagram-line site-line-one" /><div className="site-diagram-line site-line-two" /><div className="site-diagram-line site-line-three" /></div></section>
+    <section className="site-section site-proof" id="proof"><div><p className="site-kicker">Built to be inspected</p><h2>Not a simulation.<br />A public evidence trail.</h2><p>The interactive walkthrough uses fresh testnet contracts, actual Unichain transactions, and a recorded cross-chain settlement path. Judges can inspect each economic transition instead of taking a dashboard at face value.</p><Link className="site-primary" href="/demo">Create or open a demo run <span>→</span></Link></div><div className="site-proof-card"><p>Testnet proof stack</p><div><b>Unichain Sepolia</b><span>Managed v4 liquidity and epoch settlement</span></div><div><b>Reactive Lasna</b><span>RSC execution and callback identity</span></div><div><b>MongoDB ledger</b><span>Run-scoped transaction evidence</span></div><small>Every step resolves to a public transaction receipt.</small></div></section>
+    <section className="site-final"><p className="site-kicker">Ready to inspect the system?</p><h2>See what liquidity<br /><i>that stays</i> can do.</h2><Link className="site-primary" href="/demo">Launch app <span>→</span></Link></section>
+    <footer className="site-footer"><Link className="site-wordmark" href="/">Depth<span>Bond</span></Link><span>CleanFlow Bonds for dependable on-chain markets.</span><a href="https://github.com/xqcxx/depthbond" target="_blank" rel="noreferrer">Source code ↗</a></footer>
+  </main>;
 }

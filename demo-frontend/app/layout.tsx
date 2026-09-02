@@ -3,8 +3,8 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DepthBond Testnet Walkthrough",
-  description: "A transaction-backed guided demonstration of reliable liquidity incentives.",
+  title: "DepthBond | CleanFlow Bonds for Reliable Liquidity",
+  description: "An epoch-based liquidity commitment protocol for Unichain, with Reactive settlement automation.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

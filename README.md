@@ -110,7 +110,7 @@ NEXT_PUBLIC_UNICHAIN_RPC_URL="$UNICHAIN_RPC_URL" npm run dev
 
 Use `docs/demo-runbook.md` for the complete deployment, scenario, close, callback, claim, and recording sequence.
 
-Live demo run: https://demo-frontend-khaki-nu.vercel.app/demo/ec063867-641b-4eac-8dac-df2386f0b04a
+Live demo run: https://depthbond.vercel.app/demo/ec063867-641b-4eac-8dac-df2386f0b04a
 
 ## Local Dependencies
 
