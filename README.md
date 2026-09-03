@@ -41,6 +41,26 @@ The initial Foundry core implements:
 
 The core records liquidity amounts at commitment time; `DepthBondPositionExecutor` uses that amount as the actual v4 position liquidity and binds the pool position salt to the commitment ID. ERC-20 principal is transferred directly from the LP to the PoolManager during the v4 unlock callback. Native-currency pools and pooled/multi-LP position aggregation are not implemented.
 
+## Why DepthBond
+
+### Problem / Background
+
+Liquidity mining often pays for capital at a moment in time, not liquidity that remains usable when traders need it. This enables mercenary and just-in-time LP behavior: liquidity can enter for rewards, exit early, and leave markets thin during volatility. DepthBond makes reliability measurable by tying reward eligibility to an epoch commitment, active liquidity, and in-range participation.
+
+### Impact
+
+DepthBond combines managed Uniswap v4 positions, a hook that observes qualifying swap activity, and an LP bond that creates a clear cost for early exits. Durable LPs earn from the reward reserve; inactive liquidity is simply unpaid; early exits redirect 25% of the bond to reliable LPs. The result is a transparent incentive layer that can help pools retain dependable depth without indiscriminately penalizing normal market movement.
+
+This directly addresses the Sustainable Liquidity theme by making liquidity duration, active-range presence, and early-exit costs explicit on-chain. It discourages mercenary/JIT liquidity that leaves before it serves traders and uses verifiable automated settlement to distribute rewards based on sustained liquidity behavior.
+
+### Challenges
+
+The largest challenge was implementing real Uniswap v4 lifecycle behavior instead of relying on mocked state: pool initialization, hook permission-bit deployment, unlock-callback liquidity management, ERC-20 settlement, and position-level exit restrictions. We also designed authenticated cross-chain settlement so the Unichain controller accepts a Reactive callback only from the expected RVM identity and only once per epoch-close event.
+
+### Future Plans / Support
+
+We plan to add configurable bond curves, longer-duration commitment tiers, richer range-aware reward models, and broader analysis of how the mechanism performs under real trading conditions. We would value support with security review of the hook and cross-chain callback design, economic parameter testing, Unichain mainnet-readiness, and introductions to pool operators or LP communities for pilot deployments.
+
 ## Local Test
 
 ```bash
