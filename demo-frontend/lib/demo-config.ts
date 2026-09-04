@@ -1,0 +1,22 @@
+import type { Deployment, Roles } from "./types";
+
+export const demoDeployment: Deployment = {
+  controller: "0xA70aC7f8430D51A4B7B730A80a8772a4a193c8CE",
+  executor: "0x087F692d7522726A3BffBB48C5a7a1dFB885733E",
+  hook: "0xFCAeFF40f7d16A98E62111EF82E6f5F8b2530740",
+  hookFactory: "0x4e60069CFffa7BB93d5CD742584F2126Bc034d4E",
+  swapRouter: "0x026C5DD5370D22B1b5f07A3DE1ce8aA8CF25c144",
+  token0: "0x4Df84280D1797B8A075f543f75C0ac834cD2181A",
+  token1: "0xB566796c98b8A03C6B8ACAb762008cBbaC571De3",
+  vault: "0x322A472b6FC6A941Be45973f41097951e7d7A9E8",
+};
+
+export const demoRoles: Roles = {
+  deployer: "0x599282387bcec523e9d10711ee8b396d7644ce13",
+  ada: "0x8D38A4D99Ecfec4BA55C58bEbd5593A053cf3aAE",
+  bao: "0x1f4fF9cceb7261e3e2d0FC8408BC642227f5d865",
+  jit: "0xf26DC311a125971a149da0FcBbbD38F00Be1634E",
+  trader: "0x8E74976946389e733476b2A3AF741baDCfD9fACf",
+};
+
+export const demoRsc = "0x478e2d976758a261252C262eb68E84273188E6ED" as `0x${string}`;

@@ -66,6 +66,16 @@ textarea { min-height: 130px; resize: vertical; }
 .ledger-row span { text-transform: capitalize; color: var(--acid); }
 .ledger-row small { color: #aeb9af; font: 11px "DM Mono", monospace; }
 .loading { min-height: 100vh; display: grid; place-items: center; font: 16px "DM Mono", monospace; }
+.demo-launcher { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 14px; padding: 28px; background: var(--paper); text-align: center; }
+.demo-launcher h1 { max-width: 650px; margin: 0; font-size: clamp(42px, 6vw, 74px); }
+.demo-launcher > p:not(.eyebrow) { max-width: 430px; color: #536158; line-height: 1.65; }
+.demo-launcher > a { margin-top: 16px; color: var(--ink); font: 12px "DM Mono", monospace; text-underline-offset: 4px; }
+.demo-launcher-mark { position: relative; display: grid; width: 84px; height: 84px; margin-bottom: 18px; border-radius: 50%; background: var(--acid); color: var(--ink); place-items: center; box-shadow: 8px 8px 0 var(--orange); }
+.demo-launcher-mark span { font: 700 23px Fraunces, serif; letter-spacing: -.08em; }
+.demo-launcher-mark i { position: absolute; right: -9px; bottom: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); }
+.loader-line { width: min(360px, 80vw); height: 3px; margin: 22px 0 5px; background: var(--line); overflow: hidden; }
+.loader-line span { display: block; width: 42%; height: 100%; background: var(--orange); animation: loading 1.3s ease-in-out infinite; }
+@keyframes loading { 0% { transform: translateX(-110%); } 100% { transform: translateX(250%); } }
 .back-link { display: inline-block; margin-bottom: 42px; font: 12px "DM Mono", monospace; text-decoration: none; }
 .site { overflow: hidden; background: #13211c; color: #f5f0e4; }
 .site-nav, .site-hero, .site-section, .site-statement, .site-final, .site-footer { max-width: 1240px; margin: 0 auto; }
